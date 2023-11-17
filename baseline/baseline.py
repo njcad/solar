@@ -13,13 +13,17 @@ Approach:
     3. Use scikit-learn linear regression
 
 Results: 
-    Learned weights for plant1: [ 211.68077902  -74.64520767 3210.23206367]
+    Learned weights for plant1: [ 211.68077902  -74.64520767  3210.23206367]
     Bias term for plant1: -729.282971074088
+    Mean absolute percent difference for training set on plant1: 10.21497840508398
+    Mean absolute percent difference for test set on plant1: 9.65829980696566
     R-squared error for training set on plant1: 0.2902183018575516
     R-squared error for test set on plant1: 0.3118266568343654
 
-    Learned weights for plant2: [ 408.17239839  -19.15427342 1241.55667972]
+    Learned weights for plant2: [ 408.17239839  -19.15427342  1241.55667972]
     Bias term for plant2: -6638.3181962395265
+    Mean absolute percent difference for training set on plant2: 6.794549851058215
+    Mean absolute percent difference for test set on plant2: 6.686397780117703
     R-squared error for training set on plant2: 0.7631709368546855
     R-squared error for test set on plant2: 0.7093351479346417
 """
