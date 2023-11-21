@@ -12,26 +12,37 @@ Approach:
     2. Associated output value will be the maximum total daily power yield from that day
     3. Use scikit-learn linear regression
 
-Results: 
-    Learned weights for plant1: [ 211.68077902  -74.64520767  3210.23206367]
+Results (without normalization): 
+    Learned weights for plant1: [ 211.68077902  -74.64520767  3210.23206367 ]
     Bias term for plant1: -729.282971074088
-    Mean absolute percent difference for training set on plant1: 10.21497840508398
-    Mean absolute percent difference for test set on plant1: 9.65829980696566
-    R-squared error for training set on plant1: 0.2902183018575516
-    R-squared error for test set on plant1: 0.3118266568343654
 
-    Learned weights for plant2: [ 408.17239839  -19.15427342  1241.55667972]
+    Learned weights for plant2: [ 408.17239839  -19.15427342  1241.55667972 ]
     Bias term for plant2: -6638.3181962395265
-    Mean absolute percent difference for training set on plant2: 6.794549851058215
-    Mean absolute percent difference for test set on plant2: 6.686397780117703
-    R-squared error for training set on plant2: 0.7631709368546855
-    R-squared error for test set on plant2: 0.7093351479346417
+
+Results (with normalization):
+    Learned weights for plant1: [ 0.41913696 -0.05727521  0.45565338 ]
+    Bias term for plant1: -0.19942110228987664
+
+    Learned weights for plant2: [ 0.90407847 -0.01776098  0.13780172 ]
+    Bias term for plant2: -1.312439342870605
+
+Error:
+    Mean absolute percent difference for training set on plant1: 10.214978405083977
+    Mean absolute percent difference for test set on plant1: 9.658299806965658
+    R-squared error for training set on plant1: 0.29021830185755215
+    R-squared error for test set on plant1: 0.31182665683436517
+
+    Mean absolute percent difference for training set on plant2: 6.794549851058225
+    Mean absolute percent difference for test set on plant2: 6.686397780117699
+    R-squared error for training set on plant2: 0.7631709368546852
+    R-squared error for test set on plant2: 0.7093351479346415
 """
 
 import pandas as pd 
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 
 # get csv data files (may add more later)
@@ -81,6 +92,21 @@ for i in range(1, len(weather_data) + 1):
     # merge weather and power dataframs
     merged_df = pd.merge(df_power, df_weather, on='DATE')
 
+    # normalize data by d_i_norm = (d_i) / (d_max - d_min)
+    numerical_columns = ['MAX_AMBIENT_TEMP', 'MIN_AMBIENT_TEMP', 'MAX_IRRADIATION', 'DAILY_YIELD']
+    numerical_data = merged_df[numerical_columns]
+    min_values = numerical_data.min()
+    max_values = numerical_data.max()
+    normalized_data = numerical_data / (max_values - min_values)
+    merged_df[numerical_columns] = normalized_data
+
+
+    # # normalize data with MinMaxScaler
+    # numerical_columns = ['MAX_AMBIENT_TEMP', 'MIN_AMBIENT_TEMP', 'MAX_IRRADIATION', 'DAILY_YIELD']
+    # scaler = MinMaxScaler()
+    # merged_df[numerical_columns] = scaler.fit_transform(merged_df[numerical_columns])
+
+
     # extract X matrix and y vector 
     X = merged_df[['MAX_AMBIENT_TEMP', 'MIN_AMBIENT_TEMP', 'MAX_IRRADIATION']]
     y = merged_df['DAILY_YIELD']
@@ -119,6 +145,7 @@ for i in range(1, len(weather_data) + 1):
     plt.xlabel('Data Point Index')
     plt.ylabel('Percentage Difference')
     plt.ylim(0, 100)
+    plt.show()
     plt.savefig(f'train_plant_{i}.png')
 
     # plot the differences for test set
@@ -128,4 +155,5 @@ for i in range(1, len(weather_data) + 1):
     plt.xlabel('Data Point Index')
     plt.ylabel('Percentage Difference')
     plt.ylim(0, 100)
+    plt.show()
     plt.savefig(f'test_plant_{i}.png')
