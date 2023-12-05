@@ -1,7 +1,7 @@
 """
 best_hp.py
 
-Description: file for optimizing hyperparameters of tensorflow LSTM model with relu activation (see tf_lstm.py).
+Description: file for optimizing hyperparameters of tensorflow LSTM model with relu activation.
 
 Date: 24 November 2023
 
@@ -12,10 +12,10 @@ Approach:
     2. Train tensorflow LSTM model on varying hyperparameters for different number of hidden layers, epoch size, and batch size
     3. Track values of MSE 
     4. Store in CSV files for plant 1 and plant 2
+    5. NOTE: this script takes several hours to run. 
 
-Results: (see hp_1.csv, hp_2.csv)
+Results: (see hp_1.csv, hp_2.csv, hp_analysis.py)
     BEST RESULT 1: {'num_layers': 70, 'num_epochs': 160, 'batch_size': 10, 'test_loss': 0.004714641720056534}
-
     BEST RESULT 2: {'num_layers': 30, 'num_epochs': 140, 'batch_size': 10, 'test_loss': 0.009615350514650345}
 
 Old results: 
