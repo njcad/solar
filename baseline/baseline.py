@@ -19,7 +19,7 @@ Results (without normalization):
     Learned weights for plant2: [ 408.17239839  -19.15427342  1241.55667972 ]
     Bias term for plant2: -6638.3181962395265
 
-Results (with normalization):
+Results (with normalization): 
     Learned weights for plant1: [ 0.41913696 -0.05727521  0.45565338 ]
     Bias term for plant1: -0.19942110228987664
 
@@ -31,18 +31,23 @@ Error:
     Mean absolute percent difference for test set on plant1: 9.658299806965658
     R-squared error for training set on plant1: 0.29021830185755215
     R-squared error for test set on plant1: 0.31182665683436517
+    Mean Squared Error for training set on plant1: 0.057040009810696686
+    Mean Squared Error for test set on plant1: 0.05064679011710662
 
     Mean absolute percent difference for training set on plant2: 6.794549851058225
     Mean absolute percent difference for test set on plant2: 6.686397780117699
     R-squared error for training set on plant2: 0.7631709368546852
     R-squared error for test set on plant2: 0.7093351479346415
+    Mean Squared Error for training set on plant2: 0.016746181121127197
+    Mean Squared Error for test set on plant2: 0.01813934445422388
+
 """
 
 import pandas as pd 
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 
 # get csv data files (may add more later)
@@ -100,13 +105,6 @@ for i in range(1, len(weather_data) + 1):
     normalized_data = numerical_data / (max_values - min_values)
     merged_df[numerical_columns] = normalized_data
 
-
-    # # normalize data with MinMaxScaler
-    # numerical_columns = ['MAX_AMBIENT_TEMP', 'MIN_AMBIENT_TEMP', 'MAX_IRRADIATION', 'DAILY_YIELD']
-    # scaler = MinMaxScaler()
-    # merged_df[numerical_columns] = scaler.fit_transform(merged_df[numerical_columns])
-
-
     # extract X matrix and y vector 
     X = merged_df[['MAX_AMBIENT_TEMP', 'MIN_AMBIENT_TEMP', 'MAX_IRRADIATION']]
     y = merged_df['DAILY_YIELD']
@@ -138,22 +136,30 @@ for i in range(1, len(weather_data) + 1):
     print(f'R-squared error for training set on plant{i}: {r_squared_train}')
     print(f'R-squared error for test set on plant{i}: {r_squared_test}')
 
+    # get MSE for training set and test set
+    mse_train = mean_squared_error(y_train, y_pred_train)
+    mse_test = mean_squared_error(y_test, y_pred_test)
+    print(f'Mean Squared Error for training set on plant{i}: {mse_train}')
+    print(f'Mean Squared Error for test set on plant{i}: {mse_test}')
+
     # plot the differences for training set
     plt.figure(figsize=(10, 6))
     plt.bar(range(len(abs_differences_train)), abs_differences_train)
+    plt.axhline(y=abs_differences_train.mean(), color='r', linestyle='--', label='Average')
     plt.title(f'Percentage Difference Between Predicted and Actual Values: training set, plant{i}')
     plt.xlabel('Data Point Index')
     plt.ylabel('Percentage Difference')
     plt.ylim(0, 100)
-    plt.show()
     plt.savefig(f'train_plant_{i}.png')
+    plt.show()
 
     # plot the differences for test set
     plt.figure(figsize=(10, 6))
     plt.bar(range(len(abs_differences_test)), abs_differences_test)
+    plt.axhline(y=abs_differences_test.mean(), color='r', linestyle='--', label='Average')
     plt.title(f'Percentage Difference Between Predicted and Actual Values: test set, plant{i}')
     plt.xlabel('Data Point Index')
     plt.ylabel('Percentage Difference')
     plt.ylim(0, 100)
-    plt.show()
     plt.savefig(f'test_plant_{i}.png')
+    plt.show()
