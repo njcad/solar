@@ -10,6 +10,8 @@ Authors: Nate Cadicamo, Jessica Yang, Riya Karumanchi, Ira Thawornbut
 
 Approach: use tensorflow library to implement LSTM.
 
+PROBLEM: need to create new instance of a model each time you train it. This file currently does not do that, but best_hp.py does.
+
 Results: 
     epochs: 100, batch size: 20, optimizer: adam, error: MSE
         TEST LOSS PLANT 1: 0.006391435395926237
