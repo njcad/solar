@@ -14,6 +14,7 @@ Approach:
     3. Normalize data with MinMaxScaler, which scales the data to within [0, 1].
     4. Build 24 hour sequences from sorted, split, and normalized data to feed into LSTM. Calling sort_data() 
     externally will return these sequences.  
+    
 """
 
 import pandas as pd
