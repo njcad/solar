@@ -1,7 +1,8 @@
 """
 best_hp.py
 
-Description: file for optimizing hyperparameters of tensorflow LSTM model with relu activation.
+Description: file for optimizing hyperparameters of TensorFlow LSTM model with relu activation. This is essentially our principal
+script implementing the tf LSTM for this project.
 
 Date: 24 November 2023
 
