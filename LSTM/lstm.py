@@ -8,8 +8,7 @@ Date: 22 November 2023
 
 Authors: Nate Cadicamo, Jessica Yang, Riya Karumanchi, Ira Thawornbut
 
-Approach: 
-
+NOTE: This script is NOT currently functional. This was not our main approach. We used TensorFlow. Please see best_hp.py.
 
 """
 
